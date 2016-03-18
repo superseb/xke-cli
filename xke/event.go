@@ -30,6 +30,13 @@ func (c *Client) FutureEvents() ([]Event, error) {
 	return unmarshalEvents(content)
 }
 
+// NextEvent returns the next event based on date
+func (c *Client) NextEvent() (Event, error) {
+	content, _ := c.getContent(c.ListURL + "&ddate__gte=" + time.Now().Format("2006-01-02"))
+	events, err := unmarshalEvents(content)
+	return events[0], err
+}
+
 func unmarshalEvents(content []byte) ([]Event, error) {
 	var events []Event
 	err := json.Unmarshal(content, &events)

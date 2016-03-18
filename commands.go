@@ -10,7 +10,7 @@ import (
 // Commands is an array containing the available commands.
 var Commands = []cli.Command{
 	commandList,
-	// commandDetails,
+	commandSessions,
 }
 
 var commandList = cli.Command{
@@ -26,13 +26,13 @@ var commandList = cli.Command{
 	},
 }
 
-// var commandDetails = cli.Command{
-// 	Name:      "details",
-// 	ShortName: "d",
-// 	Usage:     "List details about a XKE or Innovation Day",
-// 	ArgsUsage: "<yyyy-mm-dd>",
-// 	Action:    Details,
-// }
+var commandSessions = cli.Command{
+	Name:      "sessions",
+	ShortName: "s",
+	Usage:     "List sessions of a XKE or Innovation Day",
+	ArgsUsage: "<yyyy-mm-dd>",
+	Action:    sessions,
+}
 
 func list(c *cli.Context) {
 	client := xke.NewClient(c.GlobalString("token"))
@@ -46,4 +46,11 @@ func list(c *cli.Context) {
 	for _, e := range events {
 		fmt.Println(e)
 	}
+}
+
+func sessions(c *cli.Context) {
+	client := xke.NewClient(c.GlobalString("token"))
+	var event xke.Event
+	event, _ = client.NextEvent()
+	fmt.Println("Next event: ", event)
 }

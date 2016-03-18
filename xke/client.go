@@ -17,7 +17,7 @@ func NewClient(token string) *Client {
 	return &Client{
 		Token:       token,
 		httpClient:  &http.Client{},
-		ListURL:     "https://xke-nxt.appspot.com/api/xke/?format=json",
+		ListURL:     "https://xke-nxt.appspot.com/api/xke/?format=json&ordering=ddate",
 		SessionsURL: "https://xke-nxt.appspot.com/api/session/?format=json&xke=2016-03-18",
 	}
 }
