@@ -34,8 +34,9 @@ func main() {
 	}
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "token",
-			Usage: "Authorization token",
+			Name:   "token",
+			Usage:  "Authorization token",
+			EnvVar: "XKE_TOKEN",
 		},
 	}
 	app.Commands = Commands
