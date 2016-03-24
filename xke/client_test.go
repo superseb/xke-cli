@@ -3,6 +3,7 @@ package xke
 import (
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 )
@@ -21,7 +22,8 @@ func TestGetContentAuthorization(t *testing.T) {
 	defer server.Close()
 
 	client := NewClient(token)
-	client.getContent(server.URL)
+	u, _ := url.Parse(server.URL)
+	client.getContent(u)
 }
 
 func TestGetContentNotStatusOK(t *testing.T) {
@@ -33,7 +35,8 @@ func TestGetContentNotStatusOK(t *testing.T) {
 	defer server.Close()
 
 	client := NewClient(token)
-	_, err := client.getContent(server.URL)
+	u, _ := url.Parse(server.URL)
+	_, err := client.getContent(u)
 	if err == nil {
 		t.Error("HTTP response not equal to 200 should raise an error")
 	}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -36,7 +37,7 @@ func TestAllEvents(t *testing.T) {
 	defer server.Close()
 
 	c := xke.NewClient("token")
-	c.ListURL = server.URL
+	c.ListURL, _ = url.Parse(server.URL)
 	eventsOut, _ := c.AllEvents()
 
 	if len(eventsOut) != 3 {
@@ -48,7 +49,7 @@ func TestFutureEvents(t *testing.T) {
 	eventsIn, _ := json.Marshal(futureEvents)
 
 	f := func(w http.ResponseWriter, r *http.Request) {
-		if !strings.Contains(r.Host, time.Now().Format("2006-01-02")) {
+		if !strings.Contains(r.RequestURI, time.Now().Format("2006-01-02")) {
 			t.Error("Query string does not contain current date")
 		}
 		w.WriteHeader(200)
@@ -59,7 +60,7 @@ func TestFutureEvents(t *testing.T) {
 	defer server.Close()
 
 	c := xke.NewClient("token")
-	c.ListURL = server.URL
+	c.ListURL, _ = url.Parse(server.URL)
 	eventsOut, _ := c.FutureEvents()
 
 	if len(eventsOut) != 2 {
