@@ -18,9 +18,15 @@ var Agenda = cli.Command{
 func sessions(c *cli.Context) {
 	client := getClient(c)
 	var xke xke.XKE
-	xke, _ = client.NextXKE()
-	fmt.Println(xke)
-	sessions, _ := client.Sessions(xke.Date)
+	var d string
+	if c.NArg() == 1 {
+		d = c.Args().First()
+	} else {
+		xke, _ = client.NextXKE()
+		d = xke.Date
+	}
+	fmt.Println(d)
+	sessions, _ := client.Sessions(d)
 	for _, s := range sessions {
 		fmt.Println(s.PrintSummary())
 	}
