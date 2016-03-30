@@ -25,9 +25,12 @@ func sessions(c *cli.Context) {
 		xke, _ = client.NextXKE()
 		d = xke.Date
 	}
-	fmt.Println(d)
+	fmt.Printf("Agenda for the XKE of %s\n\n", d)
 	sessions, _ := client.Sessions(d)
-	for _, s := range sessions {
-		fmt.Println(s.PrintSummary())
+	for i := range sessions {
+		if i > 0 && sessions[i-1].StartTime != sessions[i].StartTime {
+			fmt.Println("")
+		}
+		fmt.Println(sessions[i].PrintSummary())
 	}
 }
