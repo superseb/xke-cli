@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type Event struct {
+type XKE struct {
 	Date    string `json:"ddate"`
 	Comment string `json:"comment"`
 	// StartTime   string `json:"start_time"`
@@ -14,22 +14,22 @@ type Event struct {
 	// SessionList string `json:"session_list"`
 }
 
-func (e Event) String() string {
+func (e XKE) String() string {
 	return fmt.Sprintf("%s - %s", e.Date, e.Comment)
 }
 
-// AllEvents returns a slice of future and past events
-func (c *Client) AllEvents() ([]Event, error) {
+// AllXKEs returns a slice of future and past xkes
+func (c *Client) AllXKEs() ([]XKE, error) {
 	u := c.ListURL
 	q := u.Query()
 	q.Set("ordering", "ddate")
 	u.RawQuery = q.Encode()
 	content, _ := c.getContent(u)
-	return unmarshalEvents(content)
+	return unmarshalXKEs(content)
 }
 
-// FutureEvents returns a slice of future events
-func (c *Client) FutureEvents() ([]Event, error) {
+// FutureXKEs returns a slice of future xkes
+func (c *Client) FutureXKEs() ([]XKE, error) {
 	u := c.ListURL
 	q := u.Query()
 	q.Set("ordering", "ddate")
@@ -40,17 +40,17 @@ func (c *Client) FutureEvents() ([]Event, error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	return unmarshalEvents(content)
+	return unmarshalXKEs(content)
 }
 
-// NextEvent returns the next event based on date
-func (c *Client) NextEvent() (Event, error) {
-	events, err := c.FutureEvents()
-	return events[0], err
+// NextXKE returns the next xke based on date
+func (c *Client) NextXKE() (XKE, error) {
+	xkes, err := c.FutureXKEs()
+	return xkes[0], err
 }
 
-func unmarshalEvents(content []byte) ([]Event, error) {
-	var events []Event
-	err := json.Unmarshal(content, &events)
-	return events, err
+func unmarshalXKEs(content []byte) ([]XKE, error) {
+	var xkes []XKE
+	err := json.Unmarshal(content, &xkes)
+	return xkes, err
 }

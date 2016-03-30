@@ -14,12 +14,12 @@ import (
 )
 
 var (
-	allEvents = []xke.Event{
+	allEvents = []xke.XKE{
 		{time.Now().AddDate(0, 0, -14).Format("2006-01-02"), "XKE"},
 		{time.Now().Format("2006-01-02"), "Innovation Day"},
 		{time.Now().AddDate(0, 0, 14).Format("2006-01-02"), "XKE"},
 	}
-	futureEvents = []xke.Event{
+	futureEvents = []xke.XKE{
 		{time.Now().Format("2006-01-02"), "Innovation Day"},
 		{time.Now().AddDate(0, 0, 14).Format("2006-01-02"), "XKE"},
 	}
@@ -36,9 +36,9 @@ func TestAllEvents(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(f))
 	defer server.Close()
 
-	c := xke.NewClient("token")
+	c, _ := xke.NewClient("token")
 	c.ListURL, _ = url.Parse(server.URL)
-	eventsOut, _ := c.AllEvents()
+	eventsOut, _ := c.AllXKEs()
 
 	if len(eventsOut) != 3 {
 		t.Errorf("Incorrect number of events: expected %v got %v", 3, len(eventsOut))
@@ -59,9 +59,9 @@ func TestFutureEvents(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(f))
 	defer server.Close()
 
-	c := xke.NewClient("token")
+	c, _ := xke.NewClient("token")
 	c.ListURL, _ = url.Parse(server.URL)
-	eventsOut, _ := c.FutureEvents()
+	eventsOut, _ := c.FutureXKEs()
 
 	if len(eventsOut) != 2 {
 		t.Errorf("Incorrect number of events: expected %v got %v", 2, len(eventsOut))

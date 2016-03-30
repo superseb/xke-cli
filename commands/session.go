@@ -6,19 +6,18 @@ import (
 	"strconv"
 
 	"github.com/codegangsta/cli"
-	"github.com/rchrd/xke-cli/xke"
 )
 
-var Details = cli.Command{
-	Name:      "details",
-	ShortName: "d",
+var Session = cli.Command{
+	Name:      "session",
+	ShortName: "s",
 	Usage:     "Show the details of a session",
 	ArgsUsage: "<id>",
-	Action:    details,
+	Action:    session,
 }
 
-func details(c *cli.Context) {
-	client := xke.NewClient(c.GlobalString("token"))
+func session(c *cli.Context) {
+	client := getClient(c)
 	if c.NArg() == 0 {
 		fmt.Println("ERROR - Please specify the id of the session")
 		os.Exit(1)

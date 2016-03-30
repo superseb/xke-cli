@@ -1,6 +1,7 @@
 package xke
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -15,7 +16,10 @@ type Client struct {
 	LocationURL *url.URL
 }
 
-func NewClient(token string) *Client {
+func NewClient(token string) (*Client, error) {
+	if token == "" {
+		return nil, errors.New("Authentication token not found. Please set it via flag or environment variable.")
+	}
 	c := &Client{
 		Token:      token,
 		httpClient: &http.Client{},
@@ -23,7 +27,7 @@ func NewClient(token string) *Client {
 	c.ListURL, _ = url.Parse("https://xke-nxt.appspot.com/api/xke/")
 	c.SessionURL, _ = url.Parse("https://xke-nxt.appspot.com/api/session/")
 	c.LocationURL, _ = url.Parse("https://xke-nxt.appspot.com/api/location/")
-	return c
+	return c, nil
 }
 
 func (c *Client) getContent(u *url.URL) ([]byte, error) {

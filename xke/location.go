@@ -3,6 +3,7 @@ package xke
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 )
 
 type Location struct {
@@ -21,16 +22,26 @@ func (c *Client) Locations() ([]Location, error) {
 	return unmarshalLocations(content)
 }
 
-func (c *Client) Location(id int) (Location, error) {
+func (c *Client) LocationByID(id int) (Location, error) {
 	u := c.LocationURL
 	u.Path += string(id)
+	return c.LocationByURL(u)
+}
+
+func (c *Client) LocationByURL(u *url.URL) (Location, error) {
 	content, _ := c.getContent(u)
-	locations, err := unmarshalLocations(content)
-	return locations[0], err
+	locations, err := unmarshalLocation(content)
+	return locations, err
 }
 
 func unmarshalLocations(content []byte) ([]Location, error) {
 	var locations []Location
 	err := json.Unmarshal(content, &locations)
 	return locations, err
+}
+
+func unmarshalLocation(content []byte) (Location, error) {
+	var location Location
+	err := json.Unmarshal(content, &location)
+	return location, err
 }

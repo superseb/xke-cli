@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
+	"github.com/rchrd/xke-cli/commands"
 )
 
 type Session struct {
@@ -39,7 +40,7 @@ func main() {
 			EnvVar: "XKE_TOKEN",
 		},
 	}
-	app.Commands = Commands
+	app.Commands = commands.Commands
 
 	app.Run(os.Args)
 }
