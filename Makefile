@@ -1,5 +1,8 @@
 .PHONY: cover
 
+default: test
+	go build
+
 test:
 	go test ./...
 
