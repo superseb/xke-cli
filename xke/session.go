@@ -42,9 +42,15 @@ func (c *Client) Sessions(date string) ([]Session, error) {
 	u.RawQuery = q.Encode()
 	content, _ := c.getContent(u)
 	sessions, _ := unmarshalSessions(content)
+
+	b := make(chan int)
 	for i := range sessions {
-		c.addLocation(&sessions[i])
+		go c.addLocation(&sessions[i], b)
 	}
+	for range sessions {
+		<-b // wait for each task to complete
+	}
+	// all done
 	return sessions, nil
 }
 
@@ -53,7 +59,9 @@ func (c *Client) Session(id int) (Session, error) {
 	u.Path = u.Path + strconv.Itoa(id) + "/"
 	content, _ := c.getContent(u)
 	s, _ := unmarshalSession(content)
-	c.addLocation(&s)
+	b := make(chan int)
+	c.addLocation(&s, b)
+	<-b
 	return s, nil
 }
 
@@ -69,7 +77,8 @@ func unmarshalSession(content []byte) (Session, error) {
 	return session, err
 }
 
-func (c *Client) addLocation(s *Session) {
+func (c *Client) addLocation(s *Session, b chan int) {
 	u, _ := url.Parse(s.LocationURL)
 	s.Location, _ = c.LocationByURL(u)
+	b <- 1 // signal that this call is complete
 }
