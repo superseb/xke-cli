@@ -7,15 +7,15 @@ import (
 	"github.com/rchrd/xke-cli/xke"
 )
 
-var Agenda = cli.Command{
+var AgendaCommand = cli.Command{
 	Name:      "agenda",
 	ShortName: "a",
 	Usage:     "List sessions of a XKE or Innovation Day",
 	ArgsUsage: "<yyyy-mm-dd>",
-	Action:    sessions,
+	Action:    Sessions,
 }
 
-func sessions(c *cli.Context) {
+func Sessions(c *cli.Context) {
 	client := getClient(c)
 	var xke xke.XKE
 	var d string

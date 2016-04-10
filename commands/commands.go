@@ -10,9 +10,9 @@ import (
 
 // Commands is an array containing the available commands.
 var Commands = []cli.Command{
-	XKEs,
-	Agenda,
-	Session,
+	XKEsCommand,
+	AgendaCommand,
+	SessionCommand,
 }
 
 func getClient(c *cli.Context) *xke.Client {

@@ -40,6 +40,7 @@ func main() {
 			EnvVar: "XKE_TOKEN",
 		},
 	}
+	app.Action = commands.Sessions
 	app.Commands = commands.Commands
 
 	app.Run(os.Args)

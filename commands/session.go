@@ -8,15 +8,15 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-var Session = cli.Command{
+var SessionCommand = cli.Command{
 	Name:      "session",
 	ShortName: "s",
 	Usage:     "Show the details of a session",
 	ArgsUsage: "<id>",
-	Action:    session,
+	Action:    Session,
 }
 
-func session(c *cli.Context) {
+func Session(c *cli.Context) {
 	client := getClient(c)
 	if c.NArg() == 0 {
 		fmt.Println("ERROR - Please specify the id of the session")

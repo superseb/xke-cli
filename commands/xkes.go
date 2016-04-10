@@ -7,7 +7,7 @@ import (
 	"github.com/rchrd/xke-cli/xke"
 )
 
-var XKEs = cli.Command{
+var XKEsCommand = cli.Command{
 	Name:      "xkes",
 	ShortName: "x",
 	Usage:     "List all future XKE's (and Innovation Days)",
