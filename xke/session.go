@@ -60,7 +60,7 @@ func (c *Client) Session(id int) (Session, error) {
 	content, _ := c.getContent(u)
 	s, _ := unmarshalSession(content)
 	b := make(chan int)
-	c.addLocation(&s, b)
+	go c.addLocation(&s, b)
 	<-b
 	return s, nil
 }
