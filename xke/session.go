@@ -24,11 +24,11 @@ type Session struct {
 }
 
 func (s Session) PrintSummary() string {
-	return fmt.Sprintf("%4d - %s - %s [%s] - %s", s.ID, s.StartTime, s.Title, s.Presenter, s.Location.Name)
+	return fmt.Sprintf("%4d - %s - %s [%s] - %s", s.ID, s.StartTime[:5], s.Title, s.Presenter, s.Location.Name)
 }
 
 func (s Session) PrintDetails() string {
-	details := fmt.Sprintf("%s - %s - %s - %s - %s\n\n", s.StartTime, s.EndTime, s.SessionType, s.Unit, s.Location.Name)
+	details := fmt.Sprintf("%s - %s - %s - %s - %s\n\n", s.StartTime[:5], s.EndTime[:5], s.SessionType, s.Unit, s.Location.Name)
 	details += fmt.Sprintf("%s [%s]\n\n", s.Title, s.Presenter)
 	details += fmt.Sprintf("%s", s.Summary)
 	return details
