@@ -24,7 +24,19 @@ type Session struct {
 }
 
 func (s Session) PrintSummary() string {
-	return fmt.Sprintf("%4d - %s - %s [%s] - %s", s.ID, s.StartTime[:5], s.Title, s.Presenter, s.Location.Name)
+	t := s.Title
+	if len(t) > 60 {
+		t = s.Title[:57] + "..."
+	}
+	p := s.Presenter
+	if len(p) > 30 {
+		p = s.Presenter[:27] + "..."
+	}
+	l := s.Location.Name
+	if len(l) > 25 {
+		l = s.Location.Name[:22] + "..."
+	}
+	return fmt.Sprintf("%4d  %s  %-60s  %-30s  %-25s", s.ID, s.StartTime[:5], t, p, l)
 }
 
 func (s Session) PrintDetails() string {
