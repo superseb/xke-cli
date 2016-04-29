@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
+
+	"github.com/fatih/color"
 )
 
 type Session struct {
@@ -24,9 +26,10 @@ type Session struct {
 }
 
 func (s Session) PrintSummary() string {
+	bold := color.New(color.Bold).SprintFunc()
 	t := s.Title
-	if len(t) > 60 {
-		t = s.Title[:57] + "..."
+	if len(t) > 65 {
+		t = s.Title[:62] + "..."
 	}
 	p := s.Presenter
 	if len(p) > 30 {
@@ -36,12 +39,20 @@ func (s Session) PrintSummary() string {
 	if len(l) > 25 {
 		l = s.Location.Name[:22] + "..."
 	}
-	return fmt.Sprintf("%4d  %s  %-60s  %-30s  %-25s", s.ID, s.StartTime[:5], t, p, l)
+	return fmt.Sprintf("%4d  %s  %-75s  %-30s  %-25s", s.ID, s.StartTime[:5], bold(t), p, l)
 }
 
 func (s Session) PrintDetails() string {
-	details := fmt.Sprintf("%s - %s - %s - %s - %s\n\n", s.StartTime[:5], s.EndTime[:5], s.SessionType, s.Unit, s.Location.Name)
-	details += fmt.Sprintf("%s [%s]\n\n", s.Title, s.Presenter)
+	label := color.New(color.Bold).SprintFunc()
+	details := fmt.Sprintf("%-20s  %s\n", label("Title"), s.Title)
+	details += fmt.Sprintf("%-20s  %s\n", label("Presenter"), s.Presenter)
+	details += fmt.Sprintf("\n")
+	details += fmt.Sprintf("%-20s  %s - %s\n", label("Timeslot"), s.StartTime[:5], s.EndTime[:5])
+	details += fmt.Sprintf("%-20s  %s\n", label("Location"), s.Location.Name)
+	details += fmt.Sprintf("%-20s  %s\n", label("Type"), s.SessionType)
+	details += fmt.Sprintf("%-20s  %s\n", label("Unit"), s.Unit)
+	details += fmt.Sprintf("\n")
+	details += fmt.Sprintf("%s\n", label("Summary"))
 	details += fmt.Sprintf("%s", s.Summary)
 	return details
 }
